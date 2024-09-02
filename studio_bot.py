@@ -7,6 +7,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 bot = commands.Bot(command_prefix='!', intents=intents)
+allowed_mentions = discord.AllowedMentions(everyone = True)
 
 is_studying = False  # Inizialmente non stiamo studiando
 end_time = None  # Variabile per memorizzare l'orario di fine
@@ -19,7 +20,9 @@ paused = False  # Inizialmente non è in pausa
 async def on_ready():
     print(f'{bot.user.name} è entrato nel Server per farti studiare!')
 
-@bot.command(name='set_studytime')
+
+
+@bot.command(name='study')
 async def set_studytime(ctx, study_minutes: int, break_minutes: int):
     global is_studying, end_time
     is_studying = True
@@ -55,6 +58,46 @@ async def set_studytime(ctx, study_minutes: int, break_minutes: int):
         # Fine della pausa
         await ctx.send(f'Ti sei riposato abbastanza! Torna a studiare 📚')
 
+
+
+@bot.command(name='groupstudy')
+async def group_study(ctx, study_minutes: int, break_minutes: int):
+    global is_studying, end_time
+    is_studying = True
+    await ctx.send(f'{ctx.message.guild.default_role}, ho impostato degli intervalli di studio di {study_minutes} minuti con delle pause di {break_minutes} minuti.\nNon state a guardare quanto tempo manca! Vi manderò un messaggio quando potete smettere e quando potete ripartire')
+
+    while is_studying:
+        # Inizio della sessione di studio
+        end_time = datetime.now() + timedelta(minutes=study_minutes)
+        await ctx.send(f'È l\'ora di studiare! 📚\nVi riposerete tra {study_minutes} minuti')
+        await asyncio.sleep(study_minutes * 60)
+
+        if not is_studying:
+            break
+
+        if paused:
+            while paused:
+                await asyncio.sleep(1)
+
+        # Fine della sessione di studio
+        await ctx.send(f'Sessione di studio finita! Sfruttate al massimo i {break_minutes} minuti di riposo che avete! 🛋️')
+
+        # Inizio della pausa
+        end_time = datetime.now() + timedelta(minutes=break_minutes)
+        await asyncio.sleep(break_minutes * 60)
+
+        if not is_studying:
+            break
+
+        if paused:
+            while paused:
+                await asyncio.sleep(1)    
+
+        # Fine della pausa
+        await ctx.send(f'Vi siete riposati abbastanza! Tornate a studiare 📚')
+
+
+
 @bot.command(name='pause')
 async def pause_study(ctx):
     global paused, remaining_time
@@ -65,7 +108,7 @@ async def pause_study(ctx):
         remaining_time = end_time - datetime.now()
         await ctx.send('Il timer è stato messo in pausa.')
     else:
-        await ctx.send('Non è stato impostato alcun timer! Usa il comando !set_studytime per iniziare.')
+        await ctx.send('Non è stato impostato alcun timer! Usa il comando !study per iniziare.')
 
 
 @bot.command(name='resume')
@@ -100,8 +143,43 @@ async def countdown(ctx):
             await ctx.send('Il timer è scaduto!')
             end_time = None  # Resetta il timer scaduto
     else:
-        await ctx.send('Non è stato impostato alcun timer! Usa il comando !set_studytime per iniziare.')
+        await ctx.send('Non è stato impostato alcun timer! Usa il comando !study per iniziare.')
 
+
+
+bot.remove_command('help')
+
+
+
+@bot.command(name='help')
+async def help_command(ctx):
+    help_text = """
+**Ecco un elenco di comandi disponibili:**
+
+**!study <study_minutes> <break_minutes>**  
+Inizia una sessione di studio con un timer per la durata specificata in minuti.  
+Esempio: `!study 25 5` avvia una sessione di studio di 25 minuti con una pausa di 5 minuti.
+
+**!groupstudy <study_minutes> <break_minutes>**  
+Inizia una sessione di studio per tutti i membri del server, con un timer per la durata specificata in minuti.  
+Esempio: `!groupstudy 25 5` avvia una sessione di studio di 25 minuti con una pausa di 5 minuti per tutti.
+
+**!pause**  
+Mette in pausa il timer di studio o pausa corrente.  
+Esempio: `!pause` mette in pausa il timer.
+
+**!resume**  
+Riprende il timer di studio o pausa che è stato messo in pausa.  
+Esempio: `!resume` riprende il timer dal punto in cui era stato messo in pausa.
+
+**!countdown**  
+Mostra il tempo rimanente per la sessione di studio o di pausa corrente.  
+Esempio: `!countdown` mostra quanti minuti e secondi restano nella sessione corrente.
+
+**!help**  
+Mostra questo messaggio di aiuto con la descrizione di tutti i comandi disponibili.
+    """
+    await ctx.send(help_text)
 
 
 
