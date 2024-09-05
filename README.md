@@ -5,28 +5,39 @@
 
 # Commands
 
-    !study <study_minutes> <break_minutes>
-    Starts a study session with the specified duration in minutes.
-    Example: !study 25 5 starts a 25-minute study session with a 5-minute break.
+### ***!study <study_minutes> <break_minutes>***
+ 
+Starts a study session with the specified duration in minutes.
 
-    !groupstudy <study_minutes> <break_minutes>
-    Starts a group study session for all members of the server with the specified duration.
-    Example: !groupstudy 25 5 starts a 25-minute study session with a 5-minute break for everyone.
+Example: !study 25 5 starts a 25-minute study session with a 5-minute break.
 
-    !pause
-    Pauses the current timer.
-    Example: !pause pauses the timer.
+### ***!groupstudy <study_minutes> <break_minutes>***
+ 
+Starts a group study session for all members of the server with the specified duration.
 
-    !resume
-    Resumes the paused timer.
-    Example: !resume resumes the timer.
+Example: !groupstudy 25 5 starts a 25-minute study session with a 5-minute break for everyone.
 
-    !countdown
-    Displays the remaining time for the current session or break.
-    Example: !countdown shows the remaining minutes and seconds.
+### ***!pause***
+ 
+Pauses the current timer.
 
-    !help
-    Displays this help message with a description of all available commands.
+Example: !pause pauses the timer.
+
+### ***!resume***
+ 
+Resumes the paused timer.
+
+Example: !resume resumes the timer.
+
+### ***!countdown***
+ 
+Displays the remaining time for the current session or break.
+
+Example: !countdown shows the remaining minutes and seconds.
+
+### ***!help***
+
+Displays this help message with a description of all available commands.
 
 # Contributing
 
