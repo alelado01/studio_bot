@@ -2,9 +2,18 @@ import discord
 from discord.ext import commands
 import asyncio
 from datetime import datetime, timedelta
+import os
+
+
+from discord import __version__ as discord_version
+print(f"discord.py version: {discord_version}")
 
 intents = discord.Intents.default()
-intents.message_content = True
+
+if discord_version >= '2.0.0':
+    intents.message_content = True
+else:
+    intents.messages = True
 
 bot = commands.Bot(command_prefix='!', intents=intents)
 allowed_mentions = discord.AllowedMentions(everyone = True)
@@ -183,6 +192,11 @@ Mostra questo messaggio di aiuto con la descrizione di tutti i comandi disponibi
 
 
 
+token = os.getenv("DISCORD_TOKEN")
 
+if token:
+    bot.run(token)
+else:
+    print("Errore: variabile d'ambiente DISCORD_TOKEN non trovata.")
         
-bot.run('MTI3OTgyMjczODAyMTgxNDMxNQ.GyNkX0.2ro8qlEXffzwNFwHCliEnlAj5BvLM51sM4BdUk')
+bot.run(token)
