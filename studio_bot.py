@@ -190,13 +190,5 @@ Mostra questo messaggio di aiuto con la descrizione di tutti i comandi disponibi
     """
     await ctx.send(help_text)
 
-
-
-token = os.getenv("DISCORD_TOKEN")
-
-if token:
-    bot.run(token)
-else:
-    print("Errore: variabile d'ambiente DISCORD_TOKEN non trovata.")
         
-bot.run(token)
+bot.run("DISCORD_TOKEN)
