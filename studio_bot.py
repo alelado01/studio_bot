@@ -18,10 +18,10 @@ else:
 bot = commands.Bot(command_prefix='!', intents=intents)
 allowed_mentions = discord.AllowedMentions(everyone = True)
 
-is_studying = False  # Inizialmente non stiamo studiando
-end_time = None  # Variabile per memorizzare l'orario di fine
-remaining_time = None  # Variabile per memorizzare il tempo rimanente
-paused = False  # Inizialmente non è in pausa
+is_studying = False
+end_time = None
+remaining_time = None
+paused = False
 
 
 
