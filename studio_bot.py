@@ -191,4 +191,4 @@ Mostra questo messaggio di aiuto con la descrizione di tutti i comandi disponibi
     await ctx.send(help_text)
 
         
-bot.run("DISCORD_TOKEN)
+bot.run("DISCORD_TOKEN")
